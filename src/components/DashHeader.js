@@ -10,7 +10,7 @@ const NOTES_REGEX = /^\/dash\/notes(\/)?$/;
 const USERS_REGEX = /^\/dash\/users(\/)?$/;
 
 const DashHeader = () => {
-  const { isManager, isAdmin } = useAuth();
+  const { username, status, isManager, isAdmin } = useAuth();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -96,6 +96,8 @@ const DashHeader = () => {
   } else {
     buttonContent = (
       <>
+        {username}
+        {status}
         {newNoteButton}
         {newUserButton}
         {notesButton}

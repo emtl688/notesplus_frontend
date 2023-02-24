@@ -1,11 +1,33 @@
 import { useRef, useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
 import usePersist from "../../hooks/usePersist";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
+
+// MUI
+import {
+  Box,
+  TextField,
+  Button,
+  FormGroup,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#FFFFFF",
+    },
+    secondary: {
+      main: "#2196f3",
+    },
+  },
+});
 
 const Login = () => {
   useTitle("Employee Login");
@@ -44,7 +66,7 @@ const Login = () => {
       } else if (err.status === 400) {
         setErrMsg("Missing Username or Password");
       } else if (err.status === 401) {
-        setErrMsg("Unauthorized");
+        setErrMsg("Wrong Username or Password");
       } else {
         setErrMsg(err.data?.message);
       }
@@ -61,55 +83,89 @@ const Login = () => {
   if (isLoading) return <PulseLoader color={"#FFF"} />;
 
   const content = (
-    <section className="public">
-      <header>
-        <h1>Employee Login</h1>
-      </header>
-      <main className="login">
-        <p ref={errRef} className={errClass} aria-live="assertive">
-          {errMsg}
-        </p>
+    <ThemeProvider theme={theme}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <section className="public">
+          <header>
+            <h1>Employee Login</h1>
+          </header>
+          <main className="login">
+            {/* LOGIN FORM */}
+            <FormGroup className="form">
+              {/* USERNAME INPUT */}
+              <TextField
+                label="Username"
+                id="username"
+                type="text"
+                ref={userRef}
+                value={username}
+                onChange={handleUserInput}
+                autoComplete="off"
+                variant="outlined"
+                sx={{ width: "100%", input: { color: "white" } }}
+                focused
+                required
+              />
 
-        <form className="form" onSubmit={handleSubmit}>
-          <label htmlFor="username">Username:</label>
-          <input
-            className="form__input"
-            type="text"
-            id="username"
-            ref={userRef}
-            value={username}
-            onChange={handleUserInput}
-            autoComplete="off"
-            required
-          />
+              {/* PASSWORD INPUT */}
+              <TextField
+                label="Password"
+                id="password"
+                type="password"
+                value={password}
+                onChange={handlePwdInput}
+                variant="outlined"
+                sx={{ width: "100%", input: { color: "white" } }}
+                focused
+                required
+              />
 
-          <label htmlFor="password">Password:</label>
-          <input
-            className="form__input"
-            type="password"
-            id="password"
-            onChange={handlePwdInput}
-            value={password}
-            required
-          />
-          <button className="form__submit-button">Sign In</button>
+              {/* PERSIST LOGIN CHECKBOX - Bug with logout after unchecked */}
+              {/* <FormControlLabel
+                sx={{ alignSelf: "flex-start" }}
+                control={
+                  <Checkbox
+                    onChange={handleToggle}
+                    checked={persist}
+                    id="persist"
+                    color="secondary"
+                    sx={{ background: "1px solid white" }}
+                  />
+                }
+                label="Trust this device"
+              /> */}
 
-          <label htmlFor="persist" className="form__persist">
-            <input
-              type="checkbox"
-              className="form__checkbox"
-              id="persist"
-              onChange={handleToggle}
-              checked={persist}
-            />
-            Trust This Device
-          </label>
-        </form>
-      </main>
-      <footer>
-        <Link to="/">Back to Home</Link>
-      </footer>
-    </section>
+              {/* SIGN IN BUTTON */}
+              <Button
+                variant="contained"
+                size="large"
+                sx={{
+                  width: "100%",
+                  color: "white",
+                  fontSize: "0.9em",
+                  border: "2px solid white",
+                  backgroundColor: "#001137",
+                  "&:hover": { backgroundColor: "#06215c" },
+                }}
+                onClick={handleSubmit}
+              >
+                Sign In
+              </Button>
+
+              <span ref={errRef} className={errClass} aria-live="assertive">
+                {errMsg}
+              </span>
+
+            </FormGroup>
+          </main>
+        </section>
+      </Box>
+    </ThemeProvider>
   );
 
   return content;
