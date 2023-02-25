@@ -1,128 +1,128 @@
-import { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileCirclePlus, faFilePen, faUserGear, faUserPlus, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import {
+  AppBar,
+  Button,
+  Box,
+  Typography,
+  Toolbar,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { Home, ArrowDropDownOutlined } from "@mui/icons-material";
 import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import FlexBetween from "./FlexBetween";
+import profileImage from "../img/profile.jpeg";
 
-const DASH_REGEX = /^\/dash(\/)?$/;
-const NOTES_REGEX = /^\/dash\/notes(\/)?$/;
-const USERS_REGEX = /^\/dash\/users(\/)?$/;
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const DashHeader = () => {
-  const { username, status, isManager, isAdmin } = useAuth();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#000000",
+    },
+    secondary: {
+      main: "#2196f3",
+    },
+  },
+});
+
+export default function DashHeader() {
+  const { username, status } = useAuth();
 
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const onGoHomeClicked = () => navigate("/dash");
 
-  const [sendLogout, { isLoading, isSuccess, isError, error }] =
-    useSendLogoutMutation();
+  const date = new Date();
+  const today = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "full",
+    timeStyle: "long",
+  }).format(date);
+
+  const [sendLogout, { isSuccess }] = useSendLogoutMutation();
 
   useEffect(() => {
     if (isSuccess) navigate("/");
   }, [isSuccess, navigate]);
 
-  const onNewNoteClicked = () => navigate("/dash/notes/new");
-  const onNewUserClicked = () => navigate("/dash/users/new");
-  const onNotesClicked = () => navigate("/dash/notes");
-  const onUsersClicked = () => navigate("/dash/users");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isOpen = Boolean(anchorEl);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  let dashClass = null;
-  if (
-    !DASH_REGEX.test(pathname) &&
-    !NOTES_REGEX.test(pathname) &&
-    !USERS_REGEX.test(pathname)
-  ) {
-    dashClass = "dash-header__container--small";
-  }
-
-  let newNoteButton = null;
-  if (NOTES_REGEX.test(pathname)) {
-    newNoteButton = (
-      <button
-        className="icon-button"
-        title="New Note"
-        onClick={onNewNoteClicked}
+  return (
+    <ThemeProvider theme={theme}>
+      <AppBar
+        sx={{
+          position: "static",
+        }}
       >
-        <FontAwesomeIcon icon={faFileCirclePlus} />
-      </button>
-    );
-  }
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          {/* LEFT SIDE */}
+          <FlexBetween>
+            <button
+              className="dash-footer__button icon-button"
+              onClick={onGoHomeClicked}
+            >
+              <Home />
+            </button>
+            <FlexBetween>
+              <p style={{ fontSize: "medium", paddingLeft: "20px" }}>{today}</p>
+            </FlexBetween>
+          </FlexBetween>
 
-  let newUserButton = null;
-  if (USERS_REGEX.test(pathname)) {
-    newUserButton = (
-      <button
-        className="icon-button"
-        title="New User"
-        onClick={onNewUserClicked}
-      >
-        <FontAwesomeIcon icon={faUserPlus} />
-      </button>
-    );
-  }
+          {/* RIGHT SIDE */}
+          <FlexBetween gap="1.5rem">
+            <Button
+              onClick={handleClick}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                textTransform: "none",
+                gap: "1rem",
+              }}
+            >
+              <Box
+                component="img"
+                alt="profile"
+                src={profileImage}
+                height="32px"
+                width="32px"
+                borderRadius="50%"
+                sx={{ objectFit: "cover" }}
+              />
+              <Box textAlign="left">
+                <Typography
+                  fontWeight="bold"
+                  fontSize="0.85rem"
+                  sx={{ color: "#fff6e0" }}
+                >
+                  {username}
+                </Typography>
+                <Typography fontSize="0.75rem" sx={{ color: "#ffedc2" }}>
+                  {status}
+                </Typography>
+              </Box>
+              <ArrowDropDownOutlined
+                sx={{ color: "#ffe3a3", fontSize: "25px" }}
+              />
+            </Button>
 
-  let userButton = null;
-  if (isManager || isAdmin) {
-    if (!USERS_REGEX.test(pathname) && pathname.includes("/dash")) {
-      userButton = (
-        <button className="icon-button" title="Users" onClick={onUsersClicked}>
-          <FontAwesomeIcon icon={faUserGear} />
-        </button>
-      );
-    }
-  }
-
-  let notesButton = null;
-  if (!NOTES_REGEX.test(pathname) && pathname.includes("/dash")) {
-    notesButton = (
-      <button className="icon-button" title="Notes" onClick={onNotesClicked}>
-        <FontAwesomeIcon icon={faFilePen} />
-      </button>
-    );
-  }
-
-  const logoutButton = (
-    <button className="icon-button" title="Logout" onClick={sendLogout}>
-      <FontAwesomeIcon icon={faRightFromBracket} />
-    </button>
+            <Menu
+              anchorEl={anchorEl}
+              open={isOpen}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+              <MenuItem onClick={sendLogout}>Log Out</MenuItem>
+            </Menu>
+          </FlexBetween>
+        </Toolbar>
+      </AppBar>
+    </ThemeProvider>
   );
-
-  const errClass = isError ? "errmsg" : "offscreen";
-
-  let buttonContent;
-  if (isLoading) {
-    buttonContent = <p>Logging Out...</p>;
-  } else {
-    buttonContent = (
-      <>
-        {username}
-        {status}
-        {newNoteButton}
-        {newUserButton}
-        {notesButton}
-        {userButton}
-        {logoutButton}
-      </>
-    );
-  }
-
-  const content = (
-    <>
-      <p className={errClass}>{error?.data?.message}</p>
-
-      <header className="dash-header">
-        <div className={`dash-header__container ${dashClass}`}>
-          <Link to="/dash">
-            <h1 className="dash-header__title">techNotes</h1>
-          </Link>
-          <nav className="dash-header__nav">{buttonContent}</nav>
-        </div>
-      </header>
-    </>
-  );
-
-  return content;
-};
-
-export default DashHeader;
+}

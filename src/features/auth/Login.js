@@ -90,13 +90,13 @@ const Login = () => {
         alignItems="center"
         minHeight="100vh"
       >
-        <section className="public">
+        <section>
           <header>
-            <h1>Employee Login</h1>
+            <h1 style={{ textAlign: "center" }}>Employee Login</h1>
           </header>
           <main className="login">
             {/* LOGIN FORM */}
-            <FormGroup className="form">
+            <FormGroup className="loginform">
               {/* USERNAME INPUT */}
               <TextField
                 label="Username"
