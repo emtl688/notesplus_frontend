@@ -1,5 +1,5 @@
-import { useGetNotesQuery } from "./notesApiSlice";
-import Note from "./Note";
+import { useGetTasksQuery } from "./tasksApiSlice";
+import Task from "./Task";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
@@ -16,18 +16,18 @@ import {
   Paper,
 } from "@mui/material";
 
-const NotesList = () => {
-  useTitle("techNotes: Notes List");
+const TasksList = () => {
+  useTitle("Tasks List");
 
   const { username, isManager, isAdmin } = useAuth();
 
   const {
-    data: notes,
+    data: tasks,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetNotesQuery("notesList", {
+  } = useGetTasksQuery("tasksList", {
     pollingInterval: 30000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -42,20 +42,20 @@ const NotesList = () => {
   }
 
   if (isSuccess) {
-    const { ids, entities } = notes;
+    const { ids, entities } = tasks;
 
     let filteredIds;
     if (isManager || isAdmin) {
       filteredIds = [...ids];
     } else {
       filteredIds = ids.filter(
-        (noteId) => entities[noteId].username === username
+        (taskId) => entities[taskId].username === username
       );
     }
 
     const tableContent =
       ids?.length &&
-      filteredIds.map((noteId) => <Note key={noteId} noteId={noteId} />);
+      filteredIds.map((taskId) => <Task key={taskId} taskId={taskId} />);
 
     content = (
       <Box
@@ -70,14 +70,12 @@ const NotesList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }} align="center">
-                  #
-                </TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Last updated</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Updated</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Assigned to</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Customer</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Owner</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -91,4 +89,4 @@ const NotesList = () => {
   return content;
 };
 
-export default NotesList;
+export default TasksList;

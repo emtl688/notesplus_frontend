@@ -25,9 +25,9 @@ const User = ({ userId }) => {
         <TableCell>{user.username}</TableCell>
         <TableCell>
           {user.active ? (
-            <span className="note__status--completed">Active</span>
+            <span className="task__status--completed">Active</span>
           ) : (
-            <span className="note__status--open">Inactive</span>
+            <span className="task__status--open">Inactive</span>
           )}
         </TableCell>
         <TableCell>{userRolesString}</TableCell>

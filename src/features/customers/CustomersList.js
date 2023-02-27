@@ -1,5 +1,5 @@
-import { useGetUsersQuery } from "./usersApiSlice";
-import User from "./User";
+import { useGetCustomersQuery } from "./customersApiSlice";
+import Customer from "./Customer";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
 
@@ -15,16 +15,16 @@ import {
   Paper,
 } from "@mui/material";
 
-const UsersList = () => {
-  useTitle("Users List");
+const CustomersList = () => {
+  useTitle("Customers List");
 
   const {
-    data: users,
+    data: customers,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetUsersQuery("usersList", {
+  } = useGetCustomersQuery("customersList", {
     pollingInterval: 60000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
@@ -39,10 +39,10 @@ const UsersList = () => {
   }
 
   if (isSuccess) {
-    const { ids } = users;
+    const { ids } = customers;
 
     const tableContent =
-      ids?.length && ids.map((userId) => <User key={userId} userId={userId} />);
+      ids?.length && ids.map((customerId) => <Customer key={customerId} customerId={customerId} />);
 
     content = (
       <Box
@@ -57,9 +57,11 @@ const UsersList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>Username</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Role(s)</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Company</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Phone Number</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Email</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Last updated</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -73,4 +75,4 @@ const UsersList = () => {
   return content;
 };
 
-export default UsersList;
+export default CustomersList;

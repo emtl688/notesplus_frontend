@@ -16,14 +16,24 @@ const Welcome = () => {
       <main style={{ flexDirection: "row", width: "100%", paddingTop: "10px" }}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={8}>
-            {/* TASKS / NOTES */}
+            {/* TASKS */}
             <Grid item xs={3}>
-              <h3 className="welcome__subtitle">Notes</h3>
+              <h3 className="welcome__subtitle">Tasks</h3>
               <div className="welcome__sublink">
-                <Link to="/dash/notes">View Open Notes</Link>
+                <Link to="/dash/tasks">View Open Tasks</Link>
               </div>
               <div className="welcome__sublink">
-                <Link to="/dash/notes/new">Add New Note</Link>
+                <Link to="/dash/tasks/new">Add New Task</Link>
+              </div>
+            </Grid>
+            {/* CUSTOMERS */}
+            <Grid item xs={3}>
+              <h3 className="welcome__subtitle">Customers</h3>
+              <div className="welcome__sublink">
+                <Link to="/dash/customers">View All Customers</Link>
+              </div>
+              <div className="welcome__sublink">
+                <Link to="/dash/customers/new">Add New Customer</Link>
               </div>
             </Grid>
             {/* USERS (ADMINS ONLY) */}

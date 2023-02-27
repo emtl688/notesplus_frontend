@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-/* || VARIABLES */
+/* VARIABLES */
 
 :root {
   /* COLORS */
@@ -17,7 +17,7 @@
   --INACTIVE: lightgray;
   --LINK-COLOR: whitesmoke;
   --LINK-HOVER: rgba(245, 245, 245, 0.9);
-  --NOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
+  --TASK-BGCOLOR: hsla(240, 64%, 27%, 0.65);
   --STATUS-COMPLETE: limegreen;
   --STATUS-OPEN: firebrick;
   --TABLE-BGCOLOR: #fff;
@@ -25,7 +25,7 @@
   --INPUT-INVALID: #f00;
 }
 
-/* || UTILITY CLASSES */
+/* UTILITY CLASSES */
 .errmsg {
   display: inline-block;
   background-color: rgba(255, 255, 255, 0.8);
@@ -67,7 +67,7 @@
   visibility: hidden;
 }
 
-/* || GENERAL STYLES */
+/* GENERAL STYLES */
 
 body {
   font-family: "Roboto", sans-serif;
@@ -109,7 +109,7 @@ a:focus-visible {
   color: var(--LINK-HOVER);
 }
 
-/* || PAGES */
+/* PAGES */
 
 .welcome {
   display: flex;
@@ -167,7 +167,7 @@ a:focus-visible {
   content: "";
 }
 
-/* || DASH HEADER, CONTAINER & FOOTER */
+/* DASH HEADER, CONTAINER & FOOTER */
 
 .dash-header {
   position: sticky;
@@ -216,7 +216,7 @@ a:focus-visible {
   height: auto;
 }
 
-/* || TABLES - GENERAL */
+/* TABLES - GENERAL */
 
 .table__button {
   padding: 0.25em;
@@ -224,21 +224,21 @@ a:focus-visible {
   color: var(--TABLE-COLOR);
 }
 
-/* ||  NOTE */
+/* TASK */
 
-.note__status {
+.task__status {
   font-weight: bold;
 }
 
-.note__status--open {
+.task__status--open {
   color: var(--STATUS-OPEN);
 }
 
-.note__status--completed {
+.task__status--completed {
   color: var(--STATUS-COMPLETE);
 }
 
-/* || FORM - GENERAL */
+/* FORM - GENERAL */
 
 .loginform {
   display: flex;
@@ -302,7 +302,7 @@ a:focus-visible {
 }
 
 .form__select {
-  width: 50%;
+  width: 90%;
   padding: 0.25em;
 }
 
@@ -323,8 +323,13 @@ a:focus-visible {
 
 .form__divider {
   display: flex;
+  width: 100%;
   flex-flow: column nowrap;
   gap: 0.5em;
+}
+
+.form__dates {
+  font-size: medium;
 }
 
 @media screen and (max-width: 400px) {

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
-import usePersist from "../../hooks/usePersist";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
 
@@ -12,9 +11,7 @@ import {
   Box,
   TextField,
   Button,
-  FormGroup,
-  Checkbox,
-  FormControlLabel,
+  FormGroup
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -30,14 +27,13 @@ const theme = createTheme({
 });
 
 const Login = () => {
-  useTitle("Employee Login");
+  useTitle("MyCRM | Login");
 
   const userRef = useRef();
   const errRef = useRef();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [persist, setPersist] = usePersist();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -76,7 +72,6 @@ const Login = () => {
 
   const handleUserInput = (e) => setUsername(e.target.value);
   const handlePwdInput = (e) => setPassword(e.target.value);
-  const handleToggle = () => setPersist((prev) => !prev);
 
   const errClass = errMsg ? "errmsg" : "offscreen";
 
@@ -92,7 +87,7 @@ const Login = () => {
       >
         <section>
           <header>
-            <h1 style={{ textAlign: "center" }}>Employee Login</h1>
+            <h1 style={{ textAlign: "center", marginBottom: "0.5em" }}>MyCRM | Login</h1>
           </header>
           <main className="login">
             {/* LOGIN FORM */}
@@ -124,21 +119,6 @@ const Login = () => {
                 focused
                 required
               />
-
-              {/* PERSIST LOGIN CHECKBOX - Bug with logout after unchecked */}
-              {/* <FormControlLabel
-                sx={{ alignSelf: "flex-start" }}
-                control={
-                  <Checkbox
-                    onChange={handleToggle}
-                    checked={persist}
-                    id="persist"
-                    color="secondary"
-                    sx={{ background: "1px solid white" }}
-                  />
-                }
-                label="Trust this device"
-              /> */}
 
               {/* SIGN IN BUTTON */}
               <Button
