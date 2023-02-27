@@ -41,7 +41,7 @@ const Welcome = () => {
               <Grid item xs={3}>
                 <h3 className="welcome__subtitle">Users</h3>
                 <div className="welcome__sublink">
-                  <Link to="/dash/users">View User Settings</Link>
+                  <Link to="/dash/users">View All Users</Link>
                 </div>
                 <div className="welcome__sublink">
                   <Link to="/dash/users/new">Add New User</Link>

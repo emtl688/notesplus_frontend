@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useTitle from "../../hooks/useTitle";
 import { useAddNewUserMutation } from "./usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +10,8 @@ const USER_REGEX = /^[A-z]{3,20}$/;
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/;
 
 const NewUserForm = () => {
+  useTitle("Add New User");
+
   const [addNewUser, { isLoading, isSuccess, isError, error }] = useAddNewUserMutation();
 
   const navigate = useNavigate();

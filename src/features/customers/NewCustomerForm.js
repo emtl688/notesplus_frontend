@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useTitle from "../../hooks/useTitle";
 import { useNavigate } from "react-router-dom";
 import { useAddNewCustomerMutation } from "./customersApiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +10,8 @@ const PHONE_REGEX = /^(?:\D*\d){10}\D*$/;
 const EMAIL_REGEX = /^[^@\n]+@[^@\n]+\.[^@\n]+$/;
 
 const NewCustomerForm = () => {
+  useTitle("Add New Customer");
+
   const [addNewCustomer, { isLoading, isSuccess, isError, error }] =
     useAddNewCustomerMutation();
 

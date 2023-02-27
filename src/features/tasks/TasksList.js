@@ -3,6 +3,11 @@ import Task from "./Task";
 import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    faFileCirclePlus
+} from "@fortawesome/free-solid-svg-icons"
 
 // MUI TABLE
 import {
@@ -18,6 +23,8 @@ import {
 
 const TasksList = () => {
   useTitle("Tasks List");
+
+  const navigate = useNavigate();
 
   const { username, isManager, isAdmin } = useAuth();
 
@@ -53,6 +60,8 @@ const TasksList = () => {
       );
     }
 
+    const onNewTaskClicked = () => navigate("/dash/tasks/new");
+
     const tableContent =
       ids?.length &&
       filteredIds.map((taskId) => <Task key={taskId} taskId={taskId} />);
@@ -61,6 +70,7 @@ const TasksList = () => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           marginTop: "0.6em",
@@ -82,6 +92,16 @@ const TasksList = () => {
             <TableBody>{tableContent}</TableBody>
           </Table>
         </TableContainer>
+
+        <Box sx={{ display: "flex", width: "98%", marginTop: "0.6em", justifyContent: "flex-end", paddingRight: "0.6em" }}>
+          <button
+            className="icon-button"
+            title="Add New Task"
+            onClick={onNewTaskClicked}
+          >
+            <FontAwesomeIcon icon={faFileCirclePlus} />
+          </button>
+        </Box>
       </Box>
     );
   }

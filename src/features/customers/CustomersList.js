@@ -2,6 +2,11 @@ import { useGetCustomersQuery } from "./customersApiSlice";
 import Customer from "./Customer";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faUserPlus
+} from "@fortawesome/free-solid-svg-icons"
 
 // MUI TABLE
 import {
@@ -17,6 +22,8 @@ import {
 
 const CustomersList = () => {
   useTitle("Customers List");
+
+  const navigate = useNavigate();
 
   const {
     data: customers,
@@ -41,6 +48,8 @@ const CustomersList = () => {
   if (isSuccess) {
     const { ids } = customers;
 
+    const onNewCustomerClicked = () => navigate("/dash/customers/new");
+
     const tableContent =
       ids?.length && ids.map((customerId) => <Customer key={customerId} customerId={customerId} />);
 
@@ -48,6 +57,7 @@ const CustomersList = () => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           marginTop: "0.6em",
@@ -68,6 +78,16 @@ const CustomersList = () => {
             <TableBody>{tableContent}</TableBody>
           </Table>
         </TableContainer>
+
+        <Box sx={{ display: "flex", width: "98%", marginTop: "0.6em", justifyContent: "flex-end", paddingRight: "0.6em" }}>
+          <button
+            className="icon-button"
+            title="Add New Customer"
+            onClick={onNewCustomerClicked}
+          >
+            <FontAwesomeIcon icon={faUserPlus} />
+          </button>
+        </Box>
       </Box>
     );
   }
