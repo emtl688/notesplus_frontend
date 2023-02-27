@@ -1,8 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useGetUsersQuery } from "./usersApiSlice";
 import { memo } from "react";
+
+// MUI TABLE
+import { TableCell, TableRow } from "@mui/material";
+import { Edit } from "@mui/icons-material";
 
 const User = ({ userId }) => {
   const { user } = useGetUsersQuery("usersList", {
@@ -18,18 +20,23 @@ const User = ({ userId }) => {
 
     const userRolesString = user.roles.toString().replaceAll(",", ", ");
 
-    const cellStatus = user.active ? "" : "table__cell--inactive";
-
     return (
-      <tr className="table__row user">
-        <td className={`table__cell ${cellStatus}`}>{user.username}</td>
-        <td className={`table__cell ${cellStatus}`}>{userRolesString}</td>
-        <td className={`table__cell ${cellStatus}`}>
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell>{user.username}</TableCell>
+        <TableCell>
+          {user.active ? (
+            <span className="note__status--completed">Active</span>
+          ) : (
+            <span className="note__status--open">Inactive</span>
+          )}
+        </TableCell>
+        <TableCell>{userRolesString}</TableCell>
+        <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>
           <button className="icon-button table__button" onClick={handleEdit}>
-            <FontAwesomeIcon icon={faPenToSquare} />
+            <Edit />
           </button>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   } else return null;
 };

@@ -3,6 +3,18 @@ import User from "./User";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
 
+// MUI TABLE
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+
 const UsersList = () => {
   useTitle("techNotes: Users List");
 
@@ -33,22 +45,28 @@ const UsersList = () => {
       ids?.length && ids.map((userId) => <User key={userId} userId={userId} />);
 
     content = (
-      <table className="table table--users">
-        <thead className="table__thead">
-          <tr>
-            <th scope="col" className="table__th user__username">
-              Username
-            </th>
-            <th scope="col" className="table__th user__roles">
-              Roles
-            </th>
-            <th scope="col" className="table__th user__edit">
-              Edit
-            </th>
-          </tr>
-        </thead>
-        <tbody>{tableContent}</tbody>
-      </table>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "0.6em",
+        }}
+      >
+        <TableContainer sx={{ width: "98%" }} component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold" }}>Username</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Role(s)</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{tableContent}</TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     );
   }
 

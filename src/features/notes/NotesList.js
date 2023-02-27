@@ -4,6 +4,18 @@ import useAuth from "../../hooks/useAuth";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
 
+// MUI TABLE
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+
 const NotesList = () => {
   useTitle("techNotes: Notes List");
 
@@ -16,7 +28,7 @@ const NotesList = () => {
     isError,
     error,
   } = useGetNotesQuery("notesList", {
-    pollingInterval: 15000,
+    pollingInterval: 30000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
@@ -46,31 +58,33 @@ const NotesList = () => {
       filteredIds.map((noteId) => <Note key={noteId} noteId={noteId} />);
 
     content = (
-      <table className="table table--notes">
-        <thead className="table__thead">
-          <tr>
-            <th scope="col" className="table__th note__status">
-              Status
-            </th>
-            <th scope="col" className="table__th note__created">
-              Created
-            </th>
-            <th scope="col" className="table__th note__updated">
-              Updated
-            </th>
-            <th scope="col" className="table__th note__title">
-              Title
-            </th>
-            <th scope="col" className="table__th note__username">
-              Owner
-            </th>
-            <th scope="col" className="table__th note__edit">
-              Edit
-            </th>
-          </tr>
-        </thead>
-        <tbody>{tableContent}</tbody>
-      </table>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "0.6em",
+        }}
+      >
+        <TableContainer sx={{ width: "98%" }} component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold" }} align="center">
+                  #
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Last updated</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Assigned to</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{tableContent}</TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     );
   }
 

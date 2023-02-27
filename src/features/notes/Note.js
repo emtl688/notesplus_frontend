@@ -1,8 +1,13 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useGetNotesQuery } from "./notesApiSlice";
 import { memo } from "react";
+
+// MUI TABLE
+import {
+  TableCell,
+  TableRow,
+} from "@mui/material";
+import { Edit } from "@mui/icons-material";
 
 const Note = ({ noteId }) => {
   const { note } = useGetNotesQuery("notesList", {
@@ -14,11 +19,6 @@ const Note = ({ noteId }) => {
   const navigate = useNavigate();
 
   if (note) {
-    const created = new Date(note.createdAt).toLocaleString("en-US", {
-      day: "numeric",
-      month: "long",
-    });
-
     const updated = new Date(note.updatedAt).toLocaleString("en-US", {
       day: "numeric",
       month: "long",
@@ -27,25 +27,27 @@ const Note = ({ noteId }) => {
     const handleEdit = () => navigate(`/dash/notes/${noteId}`);
 
     return (
-      <tr className="table__row">
-        <td className="table__cell note__status">
+      <TableRow key={note.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="center" component="th" scope="row">
+          {note.ticket}
+        </TableCell>
+        <TableCell>
           {note.completed ? (
             <span className="note__status--completed">Completed</span>
           ) : (
             <span className="note__status--open">Active</span>
           )}
-        </td>
-        <td className="table__cell note__created">{created}</td>
-        <td className="table__cell note__updated">{updated}</td>
-        <td className="table__cell note__title">{note.title}</td>
-        <td className="table__cell note__username">{note.username}</td>
-
-        <td className="table__cell">
+        </TableCell>
+        <TableCell>{updated}</TableCell>
+        <TableCell>{note.title}</TableCell>
+        <TableCell>{note.text}</TableCell>
+        <TableCell>{note.username}</TableCell>
+        <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>
           <button className="icon-button table__button" onClick={handleEdit}>
-            <FontAwesomeIcon icon={faPenToSquare} />
+            <Edit />
           </button>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     );
   } else return null;
 };
