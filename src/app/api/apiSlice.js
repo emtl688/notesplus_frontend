@@ -3,6 +3,7 @@ import { setCredentials } from "../../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://mycrm-ericm-api.onrender.com",
+  mode: "cors",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
