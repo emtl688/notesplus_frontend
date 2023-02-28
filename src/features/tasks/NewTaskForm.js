@@ -127,7 +127,7 @@ const NewTaskForm = ({ users, customers }) => {
               id="customer"
               name="customer"
               className="form__select"
-              value={userId}
+              value={customerId}
               onChange={onCustomerIdChanged}
             >
               {customerOptions}

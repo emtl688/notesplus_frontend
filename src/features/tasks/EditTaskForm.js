@@ -6,7 +6,6 @@ import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 
 const EditTaskForm = ({ task, users, customers }) => {
-  console.log(customers)
   const { isManager, isAdmin } = useAuth();
 
   const [updateTask, { isLoading, isSuccess, isError, error }] =
