@@ -31,7 +31,7 @@ const User = ({ userId }) => {
           )}
         </TableCell>
         <TableCell>{userRolesString}</TableCell>
-        <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <TableCell sx={{ width: "50px" }}>
           <button className="icon-button table__button" onClick={handleEdit}>
             <Edit />
           </button>

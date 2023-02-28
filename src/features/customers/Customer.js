@@ -33,7 +33,7 @@ const Customer = ({ customerId }) => {
         <TableCell>{customer.phone}</TableCell>
         <TableCell>{customer.email}</TableCell>
         <TableCell>{updated}</TableCell>
-        <TableCell sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <TableCell sx={{ width: "50px" }}>
           <button className="icon-button table__button" onClick={handleEdit}>
             <Edit />
           </button>

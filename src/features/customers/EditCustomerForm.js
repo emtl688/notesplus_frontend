@@ -166,6 +166,8 @@ const EditCustomerForm = ({ customer }) => {
               <br />
               {created}
             </p>
+          </div>
+          <div className="form__divider">
             <p className="form__dates">
               Updated:
               <br />
