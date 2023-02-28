@@ -9,6 +9,7 @@ const baseQuery = fetchBaseQuery({
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
       headers.set("Access-Control-Allow-Origin", "*");
+      headers.set("Content-Type", "application/json")
     }
     return headers;
   },
