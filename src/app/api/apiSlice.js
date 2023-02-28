@@ -3,14 +3,12 @@ import { setCredentials } from "../../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://mycrm-ericm-api.onrender.com",
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
-
+    
     if (token) {
-      headers.set("Access-Control-Allow-Origin", "*");
-      headers.set("Access-Control-Allow-Headers", "Authorization, Content-Type");
-      headers.set("Authorization", `Bearer ${token}`);
-      headers.set("Content-Type", "application/json")
+      headers.set("authorization", `Bearer ${token}`);
     }
     return headers;
   },
