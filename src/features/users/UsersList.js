@@ -53,7 +53,7 @@ const UsersList = () => {
           marginTop: "0.6em",
         }}
       >
-        <TableContainer sx={{ width: "98%" }} component={Paper}>
+        <TableContainer sx={{ width: "99%" }} component={Paper}>
           <Table>
             <TableHead>
               <TableRow>

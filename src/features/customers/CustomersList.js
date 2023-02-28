@@ -60,11 +60,10 @@ const CustomersList = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "0.6em",
-          marginBottom: "0.6em"
+          marginTop: "0.6em"
         }}
       >
-        <TableContainer sx={{ width: "98%" }} component={Paper}>
+        <TableContainer sx={{ width: "99%" }} component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
@@ -80,7 +79,7 @@ const CustomersList = () => {
           </Table>
         </TableContainer>
 
-        <Box sx={{ display: "flex", width: "98%", justifyContent: "flex-end", paddingRight: "0.6em" }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", width: "99%", marginTop: "0.6em", paddingRight: "0.6em" }}>
           <button
             className="icon-button"
             title="Add New Customer"
