@@ -159,7 +159,7 @@ const EditCustomerForm = ({ customer }) => {
           onChange={onEmailChanged}
         />
 
-        <div className="form__row">
+        <div className="form__row" style={{ marginBottom: "0.8em" }}>
           <div className="form__divider">
             <p className="form__dates">
               Created:

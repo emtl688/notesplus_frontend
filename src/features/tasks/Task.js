@@ -3,10 +3,7 @@ import { useGetTasksQuery } from "./tasksApiSlice";
 import { memo } from "react";
 
 // MUI TABLE
-import {
-  TableCell,
-  TableRow,
-} from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 
 const Task = ({ taskId }) => {
@@ -27,7 +24,10 @@ const Task = ({ taskId }) => {
     const handleEdit = () => navigate(`/dash/tasks/${taskId}`);
 
     return (
-      <TableRow key={task.title} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+      <TableRow
+        key={task.title}
+        sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      >
         <TableCell>
           {task.completed ? (
             <span className="task__status--completed">Completed</span>
@@ -38,7 +38,7 @@ const Task = ({ taskId }) => {
         <TableCell>{updated}</TableCell>
         <TableCell>{task.title}</TableCell>
         <TableCell>{task.text}</TableCell>
-        <TableCell>{task.customer}</TableCell>
+        <TableCell>{task.customerName}</TableCell>
         <TableCell>{task.username}</TableCell>
         <TableCell sx={{ width: "50px" }}>
           <button className="icon-button table__button" onClick={handleEdit}>

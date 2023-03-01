@@ -3,16 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
+import usePersist from "../../hooks/usePersist";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
 
 // MUI
-import {
-  Box,
-  TextField,
-  Button,
-  FormGroup
-} from "@mui/material";
+import { Box, TextField, Button, FormGroup } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -34,6 +30,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [persist, setPersist] = usePersist();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -72,6 +69,7 @@ const Login = () => {
 
   const handleUserInput = (e) => setUsername(e.target.value);
   const handlePwdInput = (e) => setPassword(e.target.value);
+  const handleToggle = () => setPersist((prev) => !prev);
 
   const errClass = errMsg ? "errmsg" : "offscreen";
 
@@ -87,7 +85,9 @@ const Login = () => {
       >
         <section>
           <header>
-            <h1 style={{ textAlign: "center", marginBottom: "0.5em" }}>MyCRM | Login</h1>
+            <h1 style={{ textAlign: "center", marginBottom: "0.5em" }}>
+              MyCRM | Login
+            </h1>
           </header>
           <main className="login">
             {/* LOGIN FORM */}
@@ -120,6 +120,21 @@ const Login = () => {
                 required
               />
 
+              <label
+                htmlFor="persist"
+                style={{ alignSelf: "flex-start" }}
+                className="form__persist"
+              >
+                <input
+                  type="checkbox"
+                  className="form__checkbox"
+                  id="persist"
+                  onChange={handleToggle}
+                  checked={persist}
+                />
+                Trust This Device
+              </label>
+
               {/* SIGN IN BUTTON */}
               <Button
                 variant="contained"
@@ -140,7 +155,6 @@ const Login = () => {
               <span ref={errRef} className={errClass} aria-live="assertive">
                 {errMsg}
               </span>
-
             </FormGroup>
           </main>
         </section>
