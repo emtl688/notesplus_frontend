@@ -6,6 +6,7 @@ import { useLoginMutation } from "./authApiSlice";
 import usePersist from "../../hooks/usePersist";
 import useTitle from "../../hooks/useTitle";
 import PulseLoader from "react-spinners/PulseLoader";
+import logo from "../../img/login_logo.png";
 
 // MUI
 import { Box, TextField, Button, FormGroup } from "@mui/material";
@@ -83,12 +84,21 @@ const Login = () => {
         alignItems="center"
         minHeight="100vh"
       >
-        <section>
-          <header>
-            <h1 style={{ textAlign: "center", marginBottom: "0.5em" }}>
-              MyCRM | Login
-            </h1>
-          </header>
+        <section style={{ position: "relative", marginBottom: "-65px" }}>
+          <div style={{ marginBottom: "120px" }}>
+            <img
+              src={logo}
+              alt="Logo"
+              style={{
+                position: "absolute",
+                top: "5%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                maxWidth: "50%",
+                maxHeight: "50%",
+              }}
+            />
+          </div>
           <main className="login">
             {/* LOGIN FORM */}
             <FormGroup className="loginform">

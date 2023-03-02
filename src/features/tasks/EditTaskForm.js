@@ -5,6 +5,49 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 
+// MUI
+import {
+  TextField,
+  Checkbox,
+  FormGroup,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControlLabel,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#FFFFFF",
+    },
+    secondary: {
+      main: "#2196f3",
+    },
+  },
+});
+
+const MuiSelectStyling = {
+  color: "white",
+  ".MuiOutlinedInput-notchedOutline": {
+    borderColor: "white",
+    border: "2px solid",
+  },
+  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "white",
+    border: "2px solid",
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: "white",
+    border: "2px solid",
+  },
+  ".MuiSvgIcon-root ": {
+    fill: "white !important",
+  },
+};
+
 const EditTaskForm = ({ task, users, customers }) => {
   const { isManager, isAdmin } = useAuth();
 
@@ -40,11 +83,20 @@ const EditTaskForm = ({ task, users, customers }) => {
   const onUserIdChanged = (e) => setUserId(e.target.value);
   const onCustomerIdChanged = (e) => setCustomerId(e.target.value);
 
-  const canSave = [title, text, userId, customerId].every(Boolean) && !isLoading;
+  const canSave =
+    [title, text, userId, customerId].every(Boolean) && !isLoading;
 
   const onSaveTaskClicked = async (e) => {
+    e.preventDefault();
     if (canSave) {
-      await updateTask({ id: task.id, user: userId, customer: customerId, title, text, completed });
+      await updateTask({
+        id: task.id,
+        user: userId,
+        customer: customerId,
+        title,
+        text,
+        completed,
+      });
     }
   };
 
@@ -52,14 +104,6 @@ const EditTaskForm = ({ task, users, customers }) => {
     await deleteTask({ id: task.id });
   };
 
-  const created = new Date(task.createdAt).toLocaleString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
   const updated = new Date(task.updatedAt).toLocaleString("en-US", {
     day: "numeric",
     month: "long",
@@ -71,25 +115,21 @@ const EditTaskForm = ({ task, users, customers }) => {
 
   const userOptions = users.map((user) => {
     return (
-      <option key={user.id} value={user.id}>
-        {" "}
+      <MenuItem key={user.id} value={user.id}>
         {user.username}
-      </option>
+      </MenuItem>
     );
   });
 
   const customerOptions = customers.map((customer) => {
     return (
-      <option key={customer.id} value={customer.id}>
-        {" "}
+      <MenuItem key={customer.id} value={customer.id}>
         {customer.name}
-      </option>
+      </MenuItem>
     );
   });
 
   const errClass = isError || isDelError ? "errmsg" : "offscreen";
-  const validTitleClass = !title ? "form__input--incomplete" : "";
-  const validTextClass = !text ? "form__input--incomplete" : "";
 
   const errContent = (error?.data?.message || delerror?.data?.message) ?? "";
 
@@ -110,113 +150,120 @@ const EditTaskForm = ({ task, users, customers }) => {
     <>
       <p className={errClass}>{errContent}</p>
 
-      <form className="form" onSubmit={(e) => e.preventDefault()}>
-        <div className="form__title-row">
-          <h2>Edit Task #{task.ticket}</h2>
-          <div className="form__action-buttons">
-            <button
-              className="icon-button"
-              title="Save"
-              onClick={onSaveTaskClicked}
-              disabled={!canSave}
-            >
-              <FontAwesomeIcon icon={faSave} />
-            </button>
-            {deleteButton}
+      <ThemeProvider theme={theme}>
+        <FormGroup className="form">
+          <div className="form__title-row">
+            <h3>Edit Task #{task.ticket}</h3>
+            <div className="form__action-buttons">
+              <button
+                className="icon-button"
+                title="Save"
+                onClick={onSaveTaskClicked}
+                disabled={!canSave}
+              >
+                <FontAwesomeIcon icon={faSave} />
+              </button>
+              {deleteButton}
+            </div>
           </div>
-        </div>
-        <label className="form__label" htmlFor="task-title">
-          Title:
-        </label>
-        <input
-          className={`form__input ${validTitleClass}`}
-          id="task-title"
-          name="title"
-          type="text"
-          autoComplete="off"
-          value={title}
-          onChange={onTitleChanged}
-        />
 
-        <div className="form__row">
-          <div className="form__divider">
-            <label className="form__label" htmlFor="task-text">
-              Text:
-            </label>
-            <textarea
-              className={`form__input form__input--text ${validTextClass}`}
-              id="task-text"
-              name="text"
-              value={text}
-              onChange={onTextChanged}
-            />
-          </div>
-          <div className="form__divider">
-            <label
-              className="form__label"
-              htmlFor="task-username"
-            >
-              Assigned to:
-            </label>
-            <select
-              id="task-username"
-              name="username"
-              className="form__select"
-              value={userId}
-              onChange={onUserIdChanged}
-            >
-              {userOptions}
-            </select>
+          {/* TITLE */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Task Title"
+            id="task-title"
+            type="text"
+            name="title"
+            value={title}
+            onChange={onTitleChanged}
+            variant="outlined"
+            focused
+            required
+          />
 
-            <label
-              className="form__label"
-              htmlFor="task-customer"
-            >
-              Customer:
-            </label>
-            <select
+          {/* TEXT / DESCRIPTION */}
+          <TextField
+            inputProps={{ style: { color: "white" } }}
+            label="Task Description"
+            id="task-text"
+            type="text"
+            name="text"
+            value={text}
+            onChange={onTextChanged}
+            variant="outlined"
+            multiline
+            rows={4}
+            focused
+            required
+          />
+
+          {/* CUSTOMER */}
+          <FormControl>
+            <InputLabel id="task-customer-label" sx={{ color: "white" }}>
+              Customer :
+            </InputLabel>
+            <Select
+              sx={MuiSelectStyling}
+              labelId="task-customer-label"
               id="task-customer"
-              name="customer"
-              className="form__select"
               value={customerId}
               onChange={onCustomerIdChanged}
+              label="Customer :"
             >
               {customerOptions}
-            </select>
-          </div>
-        </div>
+            </Select>
+          </FormControl>
 
-        <div className="form__row">
-          <div className="form__divider">
-            <label
-              className="form__label form__checkbox-container"
-              htmlFor="task-completed"
+          {/* ASSIGNED USER / EMPLOYEE */}
+          <FormControl>
+            <InputLabel id="task-username-label" sx={{ color: "white" }}>
+              Assigned to :
+            </InputLabel>
+            <Select
+              sx={MuiSelectStyling}
+              labelId="task-username-label"
+              id="task-username"
+              value={userId}
+              onChange={onUserIdChanged}
+              label="Assigned to :"
             >
-              Mark as complete:
-              <input
-                className="form__checkbox"
+              {userOptions}
+            </Select>
+          </FormControl>
+
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ width: "50%", justifyContent: "flex-start" }}>
+              <p className="form__dates">Updated: {updated}</p>
+            </div>
+            <div
+              style={{
+                width: "50%",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              {/* COMPLETED CHECKBOX */}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{
+                      color: "white",
+                      "&.Mui-checked": {
+                        color: "white",
+                      },
+                    }}
+                  />
+                }
+                label="Mark as completed"
                 id="task-completed"
                 name="completed"
-                type="checkbox"
                 checked={completed}
                 onChange={onCompletedChanged}
               />
-            </label>
+            </div>
           </div>
-          <div className="form__divider">
-            <p className="form__dates">
-              Created:
-              <br />
-              {created}
-            </p>
-            <p className="form__dates">
-              Updated:
-              <br />
-              {updated}
-            </p>
-          </div>
-        </div>
-      </form>
+        </FormGroup>
+      </ThemeProvider>
     </>
   );
 

@@ -8,6 +8,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 
+// MUI
+import { TextField, FormGroup } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#FFFFFF",
+    },
+    secondary: {
+      main: "#2196f3",
+    },
+  },
+});
+
 const EditCustomerForm = ({ customer }) => {
   const { isManager, isAdmin } = useAuth();
 
@@ -44,6 +59,7 @@ const EditCustomerForm = ({ customer }) => {
   const canSave = [name, company, phone, email].every(Boolean) && !isLoading;
 
   const onSaveCustomerClicked = async (e) => {
+    e.preventDefault();
     if (canSave) {
       await updateCustomer({ id: customer.id, name, company, phone, email });
     }
@@ -53,14 +69,6 @@ const EditCustomerForm = ({ customer }) => {
     await deleteCustomer({ id: customer.id });
   };
 
-  const created = new Date(customer.createdAt).toLocaleString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
   const updated = new Date(customer.updatedAt).toLocaleString("en-US", {
     day: "numeric",
     month: "long",
@@ -91,91 +99,93 @@ const EditCustomerForm = ({ customer }) => {
     <>
       <p className={errClass}>{errContent}</p>
 
-      <form className="form" onSubmit={(e) => e.preventDefault()}>
-        <div className="form__title-row">
-          <h2>Edit Customer</h2>
-          <div className="form__action-buttons">
-            <button
-              className="icon-button"
-              title="Save"
-              onClick={onSaveCustomerClicked}
-              disabled={!canSave}
+      <ThemeProvider theme={theme}>
+        <FormGroup className="form">
+          <div className="form__title-row">
+            <h3>Edit Customer</h3>
+            <div className="form__action-buttons">
+              <button
+                className="icon-button"
+                title="Save"
+                onClick={onSaveCustomerClicked}
+                disabled={!canSave}
+              >
+                <FontAwesomeIcon icon={faSave} />
+              </button>
+              {deleteButton}
+            </div>
+          </div>
+
+          {/* CUSTOMER NAME */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Customer Name"
+            id="customer-name"
+            name="name"
+            type="text"
+            value={name}
+            onChange={onNameChanged}
+            variant="outlined"
+            focused
+            required
+          />
+
+          {/* COMPANY */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Company"
+            id="customer-company"
+            name="company"
+            type="text"
+            value={company}
+            onChange={onCompanyChanged}
+            variant="outlined"
+            focused
+            required
+          />
+
+          {/* PHONE NUMBER */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Phone Number"
+            id="customer-phone"
+            name="phone"
+            type="text"
+            value={phone}
+            onChange={onPhoneChanged}
+            variant="outlined"
+            focused
+            required
+          />
+
+          {/* EMAIL */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Email"
+            id="customer-email"
+            name="email"
+            type="text"
+            value={email}
+            onChange={onEmailChanged}
+            variant="outlined"
+            focused
+            required
+          />
+
+          <div style={{ display: "flex" }}>
+            <div style={{ width: "50%"}}></div>
+            <div
+              style={{
+                width: "50%",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
             >
-              <FontAwesomeIcon icon={faSave} />
-            </button>
-            {deleteButton}
+              <p className="form__dates">Updated: {updated}</p>
+            </div>
           </div>
-        </div>
-
-        <label className="form__label" htmlFor="customer-name">
-          Name:
-        </label>
-        <input
-          className="form__input"
-          id="customer-name"
-          name="name"
-          type="text"
-          autoComplete="off"
-          value={name}
-          onChange={onNameChanged}
-        />
-
-        <label className="form__label" htmlFor="customer-company">
-          Company:
-        </label>
-        <input
-          className="form__input"
-          id="customer-company"
-          name="company"
-          type="text"
-          autoComplete="off"
-          value={company}
-          onChange={onCompanyChanged}
-        />
-
-        <label className="form__label" htmlFor="customer-phone">
-          Phone Number:
-        </label>
-        <input
-          className="form__input"
-          id="customer-phone"
-          name="phone"
-          type="text"
-          autoComplete="off"
-          value={phone}
-          onChange={onPhoneChanged}
-        />
-
-        <label className="form__label" htmlFor="customer-email">
-          Email:
-        </label>
-        <input
-          className="form__input"
-          id="customer-email"
-          name="email"
-          type="text"
-          autoComplete="off"
-          value={email}
-          onChange={onEmailChanged}
-        />
-
-        <div className="form__row" style={{ marginBottom: "0.8em" }}>
-          <div className="form__divider">
-            <p className="form__dates">
-              Created:
-              <br />
-              {created}
-            </p>
-          </div>
-          <div className="form__divider">
-            <p className="form__dates">
-              Updated:
-              <br />
-              {updated}
-            </p>
-          </div>
-        </div>
-      </form>
+        </FormGroup>
+      </ThemeProvider>
     </>
   );
 

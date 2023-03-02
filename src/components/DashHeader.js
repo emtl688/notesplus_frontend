@@ -64,13 +64,13 @@ export default function DashHeader() {
           {/* LEFT SIDE */}
           <FlexBetween>
             <button
-              className="dash-footer__button icon-button"
+              className="icon-button"
               onClick={onGoHomeClicked}
             >
               <Home />
             </button>
             <FlexBetween>
-              <p style={{ fontSize: "medium", paddingLeft: "20px" }}>{today}</p>
+              <p className="navDate" style={{ fontSize: "medium", paddingLeft: "20px" }}>{today}</p>
             </FlexBetween>
           </FlexBetween>
 

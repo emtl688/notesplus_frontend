@@ -30,6 +30,8 @@ const UsersList = () => {
     refetchOnMountOrArgChange: true,
   });
 
+  const superAdminID = process.env.REACT_APP_SUPER_ADMIN;
+
   let content;
 
   if (isLoading) content = <PulseLoader color={"#FFF"} />;
@@ -41,8 +43,10 @@ const UsersList = () => {
   if (isSuccess) {
     const { ids } = users;
 
+    const updatedArray = ids.filter(element => element !== superAdminID);
+
     const tableContent =
-      ids?.length && ids.map((userId) => <User key={userId} userId={userId} />);
+    updatedArray?.length && updatedArray.map((userId) => <User key={userId} userId={userId} />);
 
     content = (
       <Box

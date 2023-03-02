@@ -5,6 +5,21 @@ import { useAddNewCustomerMutation } from "./customersApiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
+// MUI
+import { TextField, FormGroup } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#FFFFFF",
+    },
+    secondary: {
+      main: "#2196f3",
+    },
+  },
+});
+
 const NAME_COMPANY_REGEX = /^[\w\s]{4,20}$/;
 const PHONE_REGEX = /^(?:\D*\d){10}\D*$/;
 const EMAIL_REGEX = /^[^@\n]+@[^@\n]+\.[^@\n]+$/;
@@ -57,7 +72,9 @@ const NewCustomerForm = () => {
   const onPhoneChanged = (e) => setPhone(e.target.value);
   const onEmailChanged = (e) => setEmail(e.target.value);
 
-  const canSave = [validName, validCompany, validPhone, validEmail].every(Boolean) && !isLoading;
+  const canSave =
+    [validName, validCompany, validPhone, validEmail].every(Boolean) &&
+    !isLoading;
 
   const onSaveCustomerClicked = async (e) => {
     e.preventDefault();
@@ -67,77 +84,84 @@ const NewCustomerForm = () => {
   };
 
   const errClass = isError ? "errmsg" : "offscreen";
-  const validNameClass = !validName ? "form__input--incomplete" : "";
-  const validCompanyClass = !validCompany ? "form__input--incomplete" : "";
-  const validPhoneClass = !validPhone ? "form__input--incomplete" : "";
-  const validEmailClass = !validEmail ? "form__input--incomplete" : "";
 
   const content = (
     <>
       <p className={errClass}>{error?.data?.message}</p>
 
-      <form className="form" onSubmit={onSaveCustomerClicked}>
-        <div className="form__title-row">
-          <h2>Add New Customer</h2>
-          <div className="form__action-buttons">
-            <button className="icon-button" title="Save" disabled={!canSave}>
-              <FontAwesomeIcon icon={faSave} />
-            </button>
+      <ThemeProvider theme={theme}>
+        <FormGroup className="form">
+          <div className="form__title-row">
+            <h3>Add New Customer</h3>
+            <div className="form__action-buttons">
+              <button
+                className="icon-button"
+                title="Save"
+                onClick={onSaveCustomerClicked}
+                disabled={!canSave}
+              >
+                <FontAwesomeIcon icon={faSave} />
+              </button>
+            </div>
           </div>
-        </div>
 
-        <label className="form__label" htmlFor="name">
-          Name (Min. 4 characters) :
-        </label>
-        <input
-          className={`form__input ${validNameClass}`}
-          id="name"
-          name="name"
-          type="text"
-          autoComplete="off"
-          value={name}
-          onChange={onNameChanged}
-        />
+          {/* CUSTOMER NAME */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Customer Name (Min. 4 characters)"
+            id="name"
+            name="name"
+            type="text"
+            value={name}
+            onChange={onNameChanged}
+            variant="outlined"
+            focused
+            required
+          />
 
-        <label className="form__label" htmlFor="company">
-          Company (Min. 4 characters) :
-        </label>
-        <input
-          className={`form__input ${validCompanyClass}`}
-          id="company"
-          name="company"
-          type="text"
-          autoComplete="off"
-          value={company}
-          onChange={onCompanyChanged}
-        />
+          {/* COMPANY NAME */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Company (Min. 4 characters)"
+            id="company"
+            name="company"
+            type="text"
+            value={company}
+            onChange={onCompanyChanged}
+            variant="outlined"
+            focused
+            required
+          />
 
-        <label className="form__label" htmlFor="phone">
-          Phone Number (Min. 10 digits) :
-        </label>
-        <input
-          className={`form__input ${validPhoneClass}`}
-          id="phone"
-          name="phone"
-          type="text"
-          autoComplete="off"
-          value={phone}
-          onChange={onPhoneChanged}
-        />
+          {/* PHONE NUMBER */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Phone Number (Min. 10 digits)"
+            id="phone"
+            name="phone"
+            type="text"
+            value={phone}
+            onChange={onPhoneChanged}
+            variant="outlined"
+            focused
+            required
+          />
 
-        <label className="form__label" htmlFor="email">
-          Email (Must include @ and .) :
-        </label>
-        <input
-          className={`form__input ${validEmailClass}`}
-          id="email"
-          name="email"
-          type="text"
-          autoComplete="off"
-          value={email}
-          onChange={onEmailChanged}
-        />
-      </form>
+          {/* EMAIL */}
+          <TextField
+            sx={{ input: { color: "white" } }}
+            label="Email (Must include @ and .)"
+            id="email"
+            name="email"
+            type="text"
+            value={email}
+            onChange={onEmailChanged}
+            variant="outlined"
+            focused
+            required
+          />
+        </FormGroup>
+      </ThemeProvider>
     </>
   );
 
